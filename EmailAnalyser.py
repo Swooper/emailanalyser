@@ -35,6 +35,7 @@ def main():
     countBySender(root)
     mostCommonWords(root)
     mostCommonWordsByMonth(root, months)
+    mostCommonWordsNoYear(root, months)
 
 def totalEmails(root):
     print ''
@@ -172,17 +173,63 @@ def mostCommonWordsByMonth(root, months):
         print month,yyyy+':'
         i = 0
         for key in sorted(dates[date], key=dates[date].get, reverse=True):
-            if i >= 10:
+            if i >= 1:
                 break
+
             padLen = 52-len(key)
             padding = ''.join([' ' for x in range(padLen)])
             print '\t'+key+': '+padding+str(dates[date][key])
             i += 1
     print ''
 
+def mostCommonWordsNoYear(root, months):
+    print 'Ten most common words by month, no year:'
+    
+    mons = {}
+    for child in root.iter('message'):
+        mm = child.find('received').find('date').text[4:6]
 
-def mostCommonWordsBySender(root):
-    pass
+        # Count the words for the current month
+        mon = {}
+        text = child.find('text').text.split()
+
+        for word in text:
+            word = word.encode('utf-8', 'ignore')
+            if word not in mon:
+                mon[word] = 1
+            else:
+                mon[word] += 1
+
+        # Add the wordcount of the current month to the total
+        if mm not in mons:
+            mons[mm] = mon
+        else:
+            for m in mons:
+                for word in mon:
+                    if word not in mons[mm]:
+                        mons[mm][word] = 1
+                    else:
+                        mons[mm][word] += 1
+
+
+    # Print the results in a readable manner
+    for m in sorted(mons):
+        i = 0
+
+        mm = str(m)
+        month = months[mm]
+        print month+':'
+
+        for key in sorted(mons[m], key=mons[m].get, reverse=True):
+            if i >= 10:
+                break
+            
+            # Separating year and month
+            padLen = 52-len(key)
+            padding = ''.join([' ' for x in range(padLen)])
+            print '\t'+key+':'+padding+str(mons[m][key])
+            i += 1
+    print ''
 
 ### RUN PART ###
 main()
