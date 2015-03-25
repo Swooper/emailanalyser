@@ -123,14 +123,14 @@ def mostCommonWords(root):
 
     i = 0
     for key in sorted(words, key=words.get, reverse=True):
-        if i > 15:
+        if i => 15:
             break
         print str(key)+':\t'+str(words[key])
         i += 1
     print ''
 
 def mostCommonWordsByMonth(root):
-    print 'Fifteen most common words by month:'
+    print 'Ten most common words by month:'
     
     dates = {}
     for child in root.iter('message'):
@@ -178,7 +178,7 @@ def mostCommonWordsByMonth(root):
         print month,yyyy+':'
 
         for key in sorted(dates[date], key=dates[date].get, reverse=True):
-            if i > 10:
+            if i => 10:
                 break
 
             # Separating year and month
