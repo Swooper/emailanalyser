@@ -14,11 +14,12 @@ def main():
 
     root = tree.getroot()
 
-    # totalEmails(root)
-    # reAndFwdCounts(root)
-    # countByMonth(root)
-    # countBySender(root)
-    # mostCommonWords(root)
+    totalEmails(root)
+    totalWords(root)
+    reAndFwdCounts(root)
+    countByMonth(root)
+    countBySender(root)
+    mostCommonWords(root)
     mostCommonWordsByMonth(root)
 
 def totalEmails(root):
@@ -27,6 +28,14 @@ def totalEmails(root):
     for child in root.iter('message'):
         counter+=1
     print 'Total emails:',counter 
+
+def totalWords(root):
+    count = 0
+    for child in root.iter('message'):
+        text = child.find('text').text.split()
+        for word in text:
+            count += 1
+    print 'Total words:',count
 
 def reAndFwdCounts(root):
     subjects = []
