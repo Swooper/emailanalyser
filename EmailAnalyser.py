@@ -19,6 +19,7 @@ def main():
     reAndFwdCounts(root)
     countByMonth(root)
     countBySender(root)
+    mostCommonWords(root)
 
 def totalEmails(root):
     print 'Counting...'
@@ -91,6 +92,31 @@ def countBySender(root):
             padLen = 52-len(k)
             padding = ''.join([' ' for i in range(padLen)])
             print '',str(k)+':'+padding+str(senders[k])
+
+def mostCommonWords(root):
+    print 'Ten most common words:'
+    words = {}
+    for child in root.iter('message'):
+        text = child.find('text').text.split()
+        
+        for word in text:
+            if word not in words:
+                words[word] = 1
+            else:
+                words[word] += 1
+
+    i = 0
+    for key in sorted(words, key=words.get, reverse=True):
+        if i > 15:
+            break
+        print str(key)+':\t'+str(words[key])
+        i += 1
+
+def mostCommonWordsByMonth(root):
+    pass
+
+def mostCommonWordsBySender(root):
+    pass
 
 ### RUN PART ###
 main()
