@@ -22,11 +22,10 @@ def main():
 
 def totalEmails(root):
     print 'Counting...'
-    subjects = []
+    counter = 0
     for child in root.iter('subject'):
-        subjects.append(child.text)
-    # Kannski laga þetta? Ekki lengur að nota subjects[] hér
-    print 'Total emails:',len(subjects) 
+        counter+=1
+    print 'Total emails:',counter 
 
 def reAndFwdCounts(root):
     subjects = []
