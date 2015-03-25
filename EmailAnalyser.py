@@ -6,23 +6,38 @@ import xml.etree.cElementTree as ET
 
 def main():
     fileName = 'messages.xml'
+    months = {'01': 'January',
+              '02': 'February',
+              '03': 'March',
+              '04': 'April',
+              '05': 'May',
+              '06': 'June',
+              '07': 'July',
+              '08': 'August',
+              '09': 'September',
+              '10': 'October',
+              '11': 'November',
+              '12': 'December' }
 
     print 'Building tree...'
     tree = ET.parse(fileName)
     print ' > Tree built.'
     print ''
 
+    
+    
     root = tree.getroot()
 
     totalEmails(root)
     totalWords(root)
     reAndFwdCounts(root)
-    countByMonth(root)
+    countByMonth(root, months)
     countBySender(root)
     mostCommonWords(root)
-    mostCommonWordsByMonth(root)
+    mostCommonWordsByMonth(root, months)
 
 def totalEmails(root):
+    print ''
     print 'Counting...'
     counter = 0
     for child in root.iter('message'):
@@ -35,6 +50,7 @@ def totalWords(root):
         text = child.find('text').text.split()
         for word in text:
             count += 1
+    print ''
     print 'Total words:',count
 
 def reAndFwdCounts(root):
@@ -50,11 +66,12 @@ def reAndFwdCounts(root):
             replyCounter+=1
         if 'Fwd:' in sub:
             fwdCounter+=1
-
+    print ''
     print 'Replies:',replyCounter
     print 'Forwards:',fwdCounter
 
-def countByMonth(root):
+def countByMonth(root, months):
+    print ''
     print 'Counting emails by month...'
     dates = {}
     for child in root.iter('date'):
@@ -63,19 +80,6 @@ def countByMonth(root):
             dates[yyyymm] = 1
         else:
             dates[yyyymm] += 1
-
-    months = {'01': 'January',
-              '02': 'February',
-              '03': 'March',
-              '04': 'April',
-              '05': 'May',
-              '06': 'June',
-              '07': 'July',
-              '08': 'August',
-              '09': 'September',
-              '10': 'October',
-              '11': 'November',
-              '12': 'December' }
 
     newyear = ''
     for key in sorted(dates):
@@ -91,6 +95,7 @@ def countByMonth(root):
     print ''
 
 def countBySender(root):
+    print ''
     print 'Counting emails by sender...'
     print ''
     senders = {}
@@ -108,6 +113,7 @@ def countBySender(root):
             print '',str(k)+':'+padding+str(senders[k])
 
 def mostCommonWords(root):
+    print ''
     print 'Fifteen most common words:'
 
     words = {}
@@ -129,7 +135,8 @@ def mostCommonWords(root):
         i += 1
     print ''
 
-def mostCommonWordsByMonth(root):
+def mostCommonWordsByMonth(root, months):
+    print ''
     print 'Ten most common words by month:'
     
     dates = {}
@@ -155,35 +162,17 @@ def mostCommonWordsByMonth(root):
 
 
     # Print the results in a readable manner
-    months = {'01': 'January',
-              '02': 'February',
-              '03': 'March',
-              '04': 'April',
-              '05': 'May',
-              '06': 'June',
-              '07': 'July',
-              '08': 'August',
-              '09': 'September',
-              '10': 'October',
-              '11': 'November',
-              '12': 'December' }
-
     for date in sorted(dates):
-        i = 0
-
+        # Seperating month and year
         yyyy = str(date)[:4]
         mm = str(date)[4:6]
         month = months[mm]
 
         print month,yyyy+':'
-
+        i = 0
         for key in sorted(dates[date], key=dates[date].get, reverse=True):
             if i >= 10:
                 break
-
-            # Separating year and month
-            
-                    
             print '\t'+key+':\t\t'+str(dates[date][key])
             i += 1
     print ''
