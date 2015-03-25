@@ -90,8 +90,9 @@ def countByMonth(root, months):
             print '\n'+yyyy+':'
         newyear = yyyy
         month = months[mm]
-                
-        print '\t'+month+':\t\t'+str(dates[key])
+        padLen = 15-len(month)
+        padding = ''.join([' ' for x in range(padLen)])
+        print '\t'+month+':'+padding+str(dates[key])
     print ''
 
 def countBySender(root):
@@ -173,7 +174,9 @@ def mostCommonWordsByMonth(root, months):
         for key in sorted(dates[date], key=dates[date].get, reverse=True):
             if i >= 10:
                 break
-            print '\t'+key+':\t\t'+str(dates[date][key])
+            padLen = 52-len(key)
+            padding = ''.join([' ' for x in range(padLen)])
+            print '\t'+key+': '+padding+str(dates[date][key])
             i += 1
     print ''
 
