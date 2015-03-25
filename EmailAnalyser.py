@@ -3,14 +3,12 @@
 # Tryggvi Þór Guðmundsson
 
 import xml.etree.cElementTree as ET
-import os
 
 def main():
-    location = '..'+os.sep+'bluecloak3'
     fileName = 'messages.xml'
 
     print 'Building tree...'
-    tree = ET.parse(location+os.sep+fileName)
+    tree = ET.parse(fileName)
     print ' > Tree built.'
 
     root = tree.getroot()
@@ -94,12 +92,13 @@ def countBySender(root):
             print '',str(k)+':'+padding+str(senders[k])
 
 def mostCommonWords(root):
-    print 'Ten most common words:'
+    print 'Fifteen most common words:'
     words = {}
     for child in root.iter('message'):
         text = child.find('text').text.split()
         
         for word in text:
+            word = word.encode('utf-8', 'ignore')
             if word not in words:
                 words[word] = 1
             else:
